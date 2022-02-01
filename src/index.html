@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Event Publisher</h1>
+<ul id="messages"></ul>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    var socket = io();
+
+    var messages = document.getElementById('messages');
+
+    socket.on('notification', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg.notification;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+</script>
+</body>
+</html>
