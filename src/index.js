@@ -8,6 +8,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const connectedSockets = new Map();
+const kafka = new Kafka(config.kafka);
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
@@ -31,27 +32,7 @@ io.on("connection", (socket) => {
     console.log(socket.id + " user connected");
 });
 
-setInterval(() => {
-    connectedSockets.forEach((socket, id) => {
-        socket.emit("pong", "pong " + id + " " + new Date().valueOf());
-    });
-}, 5000);
-
 server.listen(3000, () => {
     console.log("listening on *:3000");
+    const consumer = createConsumer({ kafka, config, io});
 });
-
-/*
-const kafka = new Kafka(config.kafka);
-
-const main = async () => {
-
-    const consumer = await createConsumer({ kafka, config});
-
-
-    const shutdown = async () => {
-        await consumer.disconnect();
-    };
-
-    return shutdown;
-};*/

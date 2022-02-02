@@ -1,7 +1,5 @@
-const server = { port: process.env.PORT || 3000 };
-
 const kafka = {
-    clientId: "npm-slack-notifier",
+    clientId: "rally-event-publisher",
     brokers: [process.env.BOOTSTRAP_BROKER || "localhost:2001"],
     ssl: process.env.KAFKA_SSL ? JSON.parse(process.env.KAFKA_SSL) : false,
     sasl:
@@ -15,28 +13,12 @@ const kafka = {
 };
 
 const consumer = {
-    groupId: process.env.KAFKA_GROUP_ID || "npm-slack-notifier",
+    groupId: process.env.KAFKA_GROUP_ID || "rally-event-publisher",
+    topic: "alm-object-change-notification-alm-5"
 };
 
-const app = {
-    secret: process.env.HOOK_SECRET,
-    topic: process.env.TOPIC || "npm-package-published",
-    mount: "/hook",
-};
-
-const processor = {
-    topic: app.topic,
-};
-
-const slack = {
-    webhookUrl: process.env.SLACK_WEBHOOK_URL,
-};
 
 module.exports = {
-    server,
     kafka,
-    consumer,
-    app,
-    processor,
-    slack,
+    consumer
 };
